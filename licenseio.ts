@@ -12,12 +12,11 @@ export class OnlineValidator {
     }
 
     public validateByKey(key: string) {
-        // return new Promise((resolve, reject) => {
-        //     console.log("Validating key " + key);
-        //
-        //     resolve({});
-        //
-        // });
+        return new Promise((resolve, reject) => {
+
+            resolve({});
+
+        });
     }
 }
 

@@ -15,18 +15,33 @@ import {OnlineValidator} from "../licenseio";
 //         console.log("An error happened " + err);
 //     })
 
-describe("OnlineValidator constructor", () => {
+describe("OnlineValidator", () => {
+    describe("constructor", () => {
+        it("should sets appId and baseUrl", () => {
+            const validator = new OnlineValidator("my-app-id", "http://mybaseurl/");
+            expect(validator.appId).to.equal("my-app-id");
+            expect(validator.baseUrl).to.equal("http://mybaseurl/");
+        });
 
-    it("should sets appId and baseUrl", () => {
-        const validator = new OnlineValidator("my-app-id", "http://mybaseurl/");
-        expect(validator.appId).to.equal("my-app-id");
-        expect(validator.baseUrl).to.equal("http://mybaseurl/");
+        it("should default baseUrl when not given", () => {
+            const validator = new OnlineValidator("my-app-id");
+            expect(validator.appId).to.equal("my-app-id");
+            expect(validator.baseUrl).to.equal("https://api.license.io");
+        });
     });
 
-    it("should default baseUrl when not given", () => {
-        const validator = new OnlineValidator("my-app-id");
-        expect(validator.appId).to.equal("my-app-id");
-        expect(validator.baseUrl).to.equal("https://api.license.io");
+    describe("validateByKey", () => {
+        let validator: OnlineValidator;
+
+        before(() => {
+            validator = new OnlineValidator("3ccf0f1b-dd3f-48d9-911a-ddf479078c37", "http://localhost:8000");
+        });
+
+        it("should resolve successfully", async () => {
+            const result = await validator.validateByKey("demoli-censek-ey");
+        });
+
     });
 
 });
+
