@@ -3,10 +3,22 @@ import request from "request-promise";
 // defaults
 const BASE_URL = "https://api.license.io";
 
+export interface Application {
+    id: string;
+    name: string;
+}
+
+export interface Licensee {
+    name: string;
+    email: string;
+    company: string;
+}
+
 export interface License {
     id: string;
-    whatevs: string;
     name: string;
+    licensee: Licensee;
+    application: Application;
 }
 
 export class OnlineValidator {
@@ -34,24 +46,9 @@ export class OnlineValidator {
             };
 
             request(options).then(resolve).catch(reject);
-            // resolve(new License());
         });
     }
 }
-
-// const onlineValidator = (options) => {
-//
-//     if (!options.app_id) {
-//         throw new Error('app_id is mandatory')
-//     }
-//
-//     return new OnlineValidator(
-//         options.base_url ? options.base_url : BASE_URL,
-//         options.app_id
-//     );
-//
-//
-// };
 
 
 /**

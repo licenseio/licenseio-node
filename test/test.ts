@@ -1,19 +1,23 @@
 import {expect} from "chai";
+import nock from "nock";
 import {OnlineValidator} from "../licenseio";
 
-// const license = require('./licenseio')
-//
-// const validator = license.onlineValidator({
-//     app_id: 'abvdef'
-//
-// });
-//
-// validator.validateByKey('mykey')
-//     .then((license) => {
-//         console.log("License validated");
-//     }, (err) => {
-//         console.log("An error happened " + err);
-//     })
+const validLicenseResponse = {
+    status: "active",
+    licensee: {name: "Steven Van Bael", email: "steven@quantus.io", company: "Quantus BVBA"},
+    application: {id: "3ccf0f1b-dd3f-48d9-911a-ddf479078c37", name: "Quantus Tasks"},
+    name: "simple license",
+    starts_at: "2019-03-13T15:03:53.846251Z",
+    expiration_type: "date",
+    expires_at: "2024-12-31T23:00:00Z",
+    features: [],
+    parameters: {},
+    version: {min: {code: 0, name: "1.0.0"}, max: {code: 1000, name: "2.0.0"}},
+    license_key: "demolicensekey",
+    created_at: "2019-03-13T15:03:53.846251Z",
+    updated_at: "2019-03-13T15:03:53.846251Z",
+    id: "2419eff9-8212-4a09-bf00-c67f789d09d9",
+};
 
 describe("OnlineValidator", () => {
     describe("constructor", () => {
@@ -34,13 +38,18 @@ describe("OnlineValidator", () => {
         let validator: OnlineValidator;
 
         before(() => {
-            validator = new OnlineValidator("3ccf0f1b-dd3f-48d9-911a-ddf479078c37", "http://localhost:8000");
+            validator = new OnlineValidator("3ccf0f1b-dd3f-48d9-911a-ddf479078c37");
         });
 
-        it("should return valid license promise", async () => {
+        it("should return valid License promise", async () => {
+            nock("https://api.license.io")
+                .post("/apps/v1/validate/key")
+                .reply(200, validLicenseResponse);
+
             const license = await validator.validateByKey("demoli-censek-ey");
-            expect(license.id).to.not.be.null;
-            expect(license.name).to.not.be.undefined;
+            expect(license.id).to.equal("2419eff9-8212-4a09-bf00-c67f789d09d9");
+            expect(license.name).to.equal("simple license");
+            expect(license.application.id).to.equal("3ccf0f1b-dd3f-48d9-911a-ddf479078c37");
         });
 
     });
