@@ -1,7 +1,15 @@
 import request from "request-promise";
+import {StatusCodeError} from "request-promise/errors";
 
 // defaults
 const BASE_URL = "https://api.license.io";
+
+export class InvalidLicenseError extends Error {
+    constructor(message: string) {
+        super(message);
+        Object.setPrototypeOf(this, InvalidLicenseError.prototype);
+    }
+}
 
 export interface Application {
     id: string;
@@ -53,7 +61,13 @@ export class OnlineValidator {
                 json: true,
             };
 
-            request(options).then(resolve).catch(reject);
+            request(options).then(resolve).catch((err) => {
+                if (err instanceof StatusCodeError) {
+                    reject(new InvalidLicenseError("License Key not found"));
+                } else {
+                    reject(err);
+                }
+            });
         });
     }
 }

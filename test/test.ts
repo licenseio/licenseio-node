@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import nock from "nock";
-import {LicenseStatus, OnlineValidator} from "../src/licenseio";
+import {InvalidLicenseError, LicenseStatus, OnlineValidator} from "../src/licenseio";
 
 const validLicenseResponse = {
     status: "active",
@@ -17,6 +17,11 @@ const validLicenseResponse = {
     created_at: "2019-03-13T15:03:53.846251Z",
     updated_at: "2019-03-13T15:03:53.846251Z",
     id: "2419eff9-8212-4a09-bf00-c67f789d09d9",
+};
+
+const licenseKeyNotFoundResponse = {
+    type: "invalid_request_error",
+    message: "License with license_key 'not-existing-key' does not exist",
 };
 
 describe("OnlineValidator", () => {
@@ -51,6 +56,18 @@ describe("OnlineValidator", () => {
             expect(license.name).to.equal("simple license");
             expect(license.application.id).to.equal("3ccf0f1b-dd3f-48d9-911a-ddf479078c37");
             expect(license.status).to.equal(LicenseStatus.active);
+        });
+
+        it("should throw InvalidLicenseError when no license with the given key is found", async () => {
+            nock("https://api.license.io")
+                .post("/apps/v1/validate/key")
+                .reply(404, licenseKeyNotFoundResponse);
+
+            try {
+                await validator.validateByKey("not-existing-key");
+            } catch (err) {
+                expect(err instanceof InvalidLicenseError).to.be.true;
+            }
         });
 
     });
