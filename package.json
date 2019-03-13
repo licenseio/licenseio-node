@@ -2,8 +2,9 @@
   "name": "licenseio",
   "version": "1.0.0",
   "description": "License.IO SDK",
-  "main": "dist/licenseio.js",
-  "types": "dist/licenseio.d.ts",
+  "main": "lib/licenseio.js",
+  "files": ["lib/**/*"],
+  "types": "lib/licenseio.d.ts",
   "scripts": {
     "test": "mocha --require ts-node/register test/**/*.ts",
     "build": "tsc"

@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import nock from "nock";
-import {OnlineValidator} from "../licenseio";
+import {LicenseStatus, OnlineValidator} from "../src/licenseio";
 
 const validLicenseResponse = {
     status: "active",
@@ -50,6 +50,7 @@ describe("OnlineValidator", () => {
             expect(license.id).to.equal("2419eff9-8212-4a09-bf00-c67f789d09d9");
             expect(license.name).to.equal("simple license");
             expect(license.application.id).to.equal("3ccf0f1b-dd3f-48d9-911a-ddf479078c37");
+            expect(license.status).to.equal(LicenseStatus.active);
         });
 
     });

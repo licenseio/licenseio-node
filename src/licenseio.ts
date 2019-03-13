@@ -17,8 +17,16 @@ export interface Licensee {
 export interface License {
     id: string;
     name: string;
+    status: LicenseStatus;
     licensee: Licensee;
     application: Application;
+}
+
+export enum LicenseStatus {
+    pending = "pending",
+    active = "active",
+    expired = "expired",
+    cancelled = "cancelled",
 }
 
 export class OnlineValidator {
