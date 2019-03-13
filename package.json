@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "License.IO SDK",
   "main": "lib/licenseio.js",
-  "files": ["lib/**/*"],
+  "files": [
+    "lib/**/*"
+  ],
   "types": "lib/licenseio.d.ts",
   "scripts": {
     "test": "mocha --require ts-node/register test/**/*.ts",
@@ -21,6 +23,7 @@
   "homepage": "https://github.com/licenseio/licenseio-nodejs#readme",
   "devDependencies": {
     "@types/chai": "^4.1.7",
+    "@types/jsonwebtoken": "^8.3.2",
     "@types/mocha": "^5.2.6",
     "@types/nock": "^9.3.1",
     "@types/request": "^2.48.1",
@@ -32,6 +35,7 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
+    "jsonwebtoken": "^8.5.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4"
   }
