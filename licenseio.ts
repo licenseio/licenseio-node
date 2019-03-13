@@ -1,6 +1,13 @@
+import request from "request-promise";
 
 // defaults
 const BASE_URL = "https://api.license.io";
+
+export interface License {
+    id: string;
+    whatevs: string;
+    name: string;
+}
 
 export class OnlineValidator {
     public readonly baseUrl: string;
@@ -11,11 +18,23 @@ export class OnlineValidator {
         this.appId = appId;
     }
 
-    public validateByKey(key: string) {
+    public validateByKey(key: string): Promise<License> {
         return new Promise((resolve, reject) => {
 
-            resolve({});
+            const options = {
+                method: "POST",
+                uri: `${this.baseUrl}/apps/v1/validate/key`,
+                headers: {
+                    "X-Licenseio-app-id": this.appId,
+                },
+                body: {
+                    key: key,
+                },
+                json: true,
+            };
 
+            request(options).then(resolve).catch(reject);
+            // resolve(new License());
         });
     }
 }

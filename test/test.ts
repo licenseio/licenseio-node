@@ -37,11 +37,12 @@ describe("OnlineValidator", () => {
             validator = new OnlineValidator("3ccf0f1b-dd3f-48d9-911a-ddf479078c37", "http://localhost:8000");
         });
 
-        it("should resolve successfully", async () => {
-            const result = await validator.validateByKey("demoli-censek-ey");
+        it("should return valid license promise", async () => {
+            const license = await validator.validateByKey("demoli-censek-ey");
+            expect(license.id).to.not.be.null;
+            expect(license.name).to.not.be.undefined;
         });
 
     });
 
 });
-
